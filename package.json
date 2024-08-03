@@ -6,8 +6,8 @@
     "node": "18.x"
   },
   "scripts": {
-    "start": "node src/index.ts",
-    "start:dev": "tsc & nodemon src/index.ts"
+    "start": "node dest/index.js",
+    "start:dev": "tsc & nodemon dest/index.js"
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
