@@ -1,20 +1,28 @@
 import express from 'express'
 import mongoose from "mongoose";
-
+import bodyParser from "body-parser";
 import {Request,Response,NextFunction} from "express";
 import {adminRoute,vendorRoute} from './routes';
+
+
 const app=express();
 
 import dotenv from 'dotenv';
 import path from "node:path";
 
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-dotenv.config({ path: path.resolve(__dirname, '../config.env') });
-
+//connect to db
 mongoose
     .connect(process.env.MONGO_URI || 'error')
     .then(()=>console.log("connected to monogodb..."))
     .catch((err)=>console.log("error",err))
+
+
+//middlewares
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
 
 app.get("/",(req:Request,res:Response)=>{
     res.status(200).json({

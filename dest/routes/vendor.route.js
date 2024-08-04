@@ -5,5 +5,7 @@ const express_1 = require("express");
 const controllers_1 = require("../controllers");
 const router = (0, express_1.Router)();
 exports.vendorRoute = router;
-router.get("/", controllers_1.welcomeVendor);
+router.get("/", controllers_1.getAllVendors);
+router.get("/:id", controllers_1.getVendorById);
 router.post('/', controllers_1.createVendor);
+router.delete('/:id', controllers_1.deleteVendor);
