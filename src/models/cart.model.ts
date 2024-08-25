@@ -1,32 +1,33 @@
 import {BelongsTo, DataTypes, Model} from 'sequelize'
 import {sequelize} from "../utility/sequelize";
-import {User} from "./user.model";
+import {Customer} from "./customer.model";
 
 
-class Vendor extends Model{
-    static User: BelongsTo<Vendor, User>;
-    user: any;
+class Cart extends Model{
     static modelName(){
-        return 'vendors'
+        return 'carts'
     }
 }
 
-Vendor.init(
+Cart.init(
     {
-        userId:{
+        customerId:{
             type:DataTypes.BIGINT,
             primaryKey:true,
         },
     },
     {
         sequelize,
-        modelName:Vendor.modelName(),
+        modelName:Cart.modelName(),
         timestamps: false,
     },
 );
-User.hasOne(Vendor, {
+Customer.hasOne(Cart, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
+    foreignKey:'customerId'
 });
-Vendor.User = Vendor.belongsTo(User,{as:'user'});
-export  {Vendor};
+Cart.belongsTo(Customer,{
+    foreignKey:'customerId'
+});
+export  {Cart};

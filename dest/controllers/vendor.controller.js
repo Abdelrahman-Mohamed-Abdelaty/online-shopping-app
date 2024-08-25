@@ -11,11 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteVendor = exports.getVendorById = exports.getAllVendors = exports.createVendor = exports.welcomeVendor = void 0;
 const models_1 = require("../models");
-const welcomeVendor = (req, res) => {
+const welcomeVendor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.status(200).json({
         msg: "hello vendor"
     });
-};
+});
 exports.welcomeVendor = welcomeVendor;
 const extractFields = (req) => {
     const { name, ownerName, foodType, pincode, address, phone, email, password, coverImages, } = req.body;
@@ -26,7 +26,7 @@ const extractFields = (req) => {
 };
 const createVendor = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const extractedFields = extractFields(req);
-    const createdVendor = yield models_1.Vendor.create(extractedFields);
+    const createdVendor = yield models_1.User.create(extractedFields);
     res.status(201).json({
         data: createdVendor,
         status: "success"
@@ -34,7 +34,7 @@ const createVendor = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
 });
 exports.createVendor = createVendor;
 const getAllVendors = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const vendors = yield models_1.Vendor.find();
+    const vendors = yield models_1.User.findAll();
     res.status(200).json({
         data: vendors,
         status: "success"
@@ -42,9 +42,13 @@ const getAllVendors = (req, res, next) => __awaiter(void 0, void 0, void 0, func
 });
 exports.getAllVendors = getAllVendors;
 const getVendorById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const vendors = yield models_1.Vendor.find({ _id: req.params.id });
+    const vendor = yield models_1.User.findAll({
+        where: {
+            id: req.params.id
+        }
+    });
     res.status(200).json({
-        data: vendors,
+        data: vendor,
         status: "success"
     });
 });
@@ -52,7 +56,7 @@ exports.getVendorById = getVendorById;
 const deleteVendor = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.params.id)
         return res.status(400).json({ message: "please provide an id" });
-    yield models_1.Vendor.deleteOne({ _id: req.params.id });
+    // await Vendor.deleteOne({_id:req.params.id});
     res.status(204).json({
         data: null,
         status: "success"

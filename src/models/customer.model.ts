@@ -3,15 +3,15 @@ import {sequelize} from "../utility/sequelize";
 import {User} from "./user.model";
 
 
-class Vendor extends Model{
-    static User: BelongsTo<Vendor, User>;
+class Customer extends Model{
+    static User: BelongsTo<Customer, User>;
     user: any;
     static modelName(){
-        return 'vendors'
+        return 'customers'
     }
 }
 
-Vendor.init(
+Customer.init(
     {
         userId:{
             type:DataTypes.BIGINT,
@@ -20,13 +20,13 @@ Vendor.init(
     },
     {
         sequelize,
-        modelName:Vendor.modelName(),
+        modelName:Customer.modelName(),
         timestamps: false,
     },
 );
-User.hasOne(Vendor, {
+User.hasOne(Customer, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
 });
-Vendor.User = Vendor.belongsTo(User,{as:'user'});
-export  {Vendor};
+Customer.User = Customer.belongsTo(User,{as:'user'});
+export  {Customer};

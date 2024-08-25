@@ -14,6 +14,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-__exportStar(require("./vendor.route"), exports);
+// export * from './vendor.route'
 __exportStar(require("./admin.route"), exports);
+__exportStar(require("./user.route"), exports);
 //export * re-export all the exports

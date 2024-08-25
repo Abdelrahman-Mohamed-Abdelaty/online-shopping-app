@@ -20,6 +20,15 @@ services:
           ME_CONFIG_BASICAUTH: false
       depends_on:
           -   mongo
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
 
 volumes:
   mongo-db:
+  postgres-db:

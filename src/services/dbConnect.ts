@@ -1,8 +1,13 @@
-import mongoose from "mongoose"
+import {sequelize} from "../utility/sequelize";
+import * as models from '../models'
 
-export const connectToDatabase=async ()=>{
-    mongoose
-        .connect(process.env.MONGO_URI || 'error')
-        .then(()=>console.log("connected to monogodb..."))
-        .catch((err)=>console.log("error",err))
+const dbStart = async ()=>{
+    try{
+        await sequelize.authenticate();
+        await sequelize.sync({alter:true});
+        console.log('Connection has been established successfully.');
+    }catch (error){
+        console.error('Unable to connect to the database:', error);
+    }
 }
+export {dbStart}

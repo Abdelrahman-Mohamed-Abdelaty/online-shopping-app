@@ -2,16 +2,15 @@ import {BelongsTo, DataTypes, Model} from 'sequelize'
 import {sequelize} from "../utility/sequelize";
 import {User} from "./user.model";
 
-
-class Vendor extends Model{
-    static User: BelongsTo<Vendor, User>;
+class Delivery extends Model{
+    static User: BelongsTo<Delivery, User>;
     user: any;
     static modelName(){
-        return 'vendors'
+        return 'deliveries'
     }
 }
 
-Vendor.init(
+Delivery.init(
     {
         userId:{
             type:DataTypes.BIGINT,
@@ -20,13 +19,13 @@ Vendor.init(
     },
     {
         sequelize,
-        modelName:Vendor.modelName(),
+        modelName:Delivery.modelName(),
         timestamps: false,
     },
 );
-User.hasOne(Vendor, {
+User.hasOne(Delivery, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
 });
-Vendor.User = Vendor.belongsTo(User,{as:'user'});
-export  {Vendor};
+Delivery.User = Delivery.belongsTo(User,{as:'user'});
+export  {Delivery};
