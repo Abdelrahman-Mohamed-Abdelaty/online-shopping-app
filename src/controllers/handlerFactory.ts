@@ -3,12 +3,11 @@ import {AppError, catchAsync} from "../utility";
 
 
 export const deleteFactory=(Model:Model)=>catchAsync (async (req,res,next)=>{
-    const data= await Model.findByPk(req.params.id);
-    if(!data){
+    const count= await Model.destroy({where:{id:req.params.id}});
+    console.log(count);
+    if(!count){
         return next(new AppError("data is not found",404));
     }
-    console.log(data.dataValues);
-    await data.destroy();
     res.status(204).json({
         status:"success",
         data:null,
@@ -17,23 +16,28 @@ export const deleteFactory=(Model:Model)=>catchAsync (async (req,res,next)=>{
 
 
 export const createFactory=(Model:Model)=>catchAsync (async (req,res,next)=>{
-    const document=await Model.create(req.body);
+    const row=await Model.create(req.body);
     res.status(201).json({
         status:"success",
         data:{
-            document
+            row
         }
     })
 })
 export const updateFactory=(Model:Model)=>catchAsync(async (req,res,next)=>{
-    const row = await Model.update(req.body,{
+    if(!req.body)
+        return next(new AppError('Please provide some data for updating',400))
+    const rowFound = await Model.findByPk(req.params.id);
+    if(!rowFound)
+        return next(new AppError("row is not found",404));
+    const [rowCount,row] = await Model.update(req.body,{
         where:{
             id:req.params.id
-        }
+        },
+        returning: true,
     });
-    if(!row){
-        return next(new AppError("document is not found",404));
-    }
+    if(!rowCount)
+        return next(new AppError("no field was updated",400));
     res.status(200).json({
         status:"success",
         data:{
