@@ -18,3 +18,4 @@ __exportStar(require("./admin.controller"), exports);
 __exportStar(require("./user.controller"), exports);
 __exportStar(require("./auth.controller"), exports);
 __exportStar(require("./error.controller"), exports);
+__exportStar(require("./product.controller"), exports);

@@ -17,4 +17,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // export * from './vendor.route'
 __exportStar(require("./admin.route"), exports);
 __exportStar(require("./user.route"), exports);
-//export * re-export all the exports
+__exportStar(require("./product.route"), exports);

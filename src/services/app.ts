@@ -1,7 +1,7 @@
 import  {Application} from 'express'
 import bodyParser from "body-parser";
 import {Request,Response,NextFunction} from "express";
-import {adminRoute, userRoute} from '../routes';
+import {adminRoute, productRoute, userRoute} from '../routes';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import session from 'express-session';
@@ -29,6 +29,7 @@ export default async (app:Application)=>{
     })
     app.use('/api/v1/admins',adminRoute);
     app.use('/api/v1/users',userRoute)
+    app.use('/api/v1/products',productRoute)
     app.all("*",(req,res,next)=>{
         const err=new AppError(`Can't find ${req.originalUrl} on this server`,404);
         next(err);

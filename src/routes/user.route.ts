@@ -12,7 +12,7 @@ import {
     logout,
     protect,
     restrictTo,
-    signup
+    signup, updateUser
 } from "../controllers";
 const router=Router();
 
@@ -37,6 +37,7 @@ router.get("/",restrictTo('admin'),getAllUsers)
 router.get("/:id",restrictTo('admin'),getUserById)
 router.post('/',restrictTo('admin'),createUser)
 router.delete('/:id',restrictTo('admin'),deleteUser)
+router.delete('/:id',restrictTo('admin'),updateUser)
 
 router.use(passport.authenticate('session'));
 router.get('/login/google', passport.authenticate('google'));
