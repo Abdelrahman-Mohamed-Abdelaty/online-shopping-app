@@ -1,6 +1,7 @@
 import {BelongsTo, DataTypes, Model} from 'sequelize'
 import {sequelize} from "../utility/sequelize";
 import {Customer} from "./customer.model";
+import {Product} from "./product.model";
 
 
 class Cart extends Model{
@@ -11,10 +12,25 @@ class Cart extends Model{
 
 Cart.init(
     {
-        customerId:{
+        id:{
             type:DataTypes.BIGINT,
             primaryKey:true,
+            autoIncrement:true,
         },
+        customerId:{
+            type:DataTypes.BIGINT,
+            allowNull:false,
+            unique:'customer-product'
+        },
+        productId:{
+            type:DataTypes.BIGINT,
+            allowNull:false,
+            unique:'customer-product'
+        },
+        units:{
+            type:DataTypes.INTEGER,
+            allowNull:false,
+        }
     },
     {
         sequelize,
@@ -22,12 +38,21 @@ Cart.init(
         timestamps: false,
     },
 );
-Customer.hasOne(Cart, {
+Customer.hasMany(Cart, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
     foreignKey:'customerId'
 });
 Cart.belongsTo(Customer,{
     foreignKey:'customerId'
+});
+
+Product.hasMany(Cart, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    foreignKey:'productId'
+})
+Cart.belongsTo(Product,{
+    foreignKey:'productId'
 });
 export  {Cart};
