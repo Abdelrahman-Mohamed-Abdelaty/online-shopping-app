@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBA Brand</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+<header>
+    <i class="fa-solid fa-bars" id="navbar"></i>
+    <img src="https://storage.googleapis.com/bosta-files/sllr_store_images/NTA5MzA4X18yMDI0LTA0LTE5VDEyOjQ0OjIxLjU3NVpfMS5qcGc=.jpg"
+         class="logo1">
+</header>
+<main>
+    <h1 class="admin-heading">Admin Dashboard</h1>
+    <div>
+        <h2 class="secondary-heading">Add products</h2>
+        <form class="add-products-form create-product">
+            <div class="product-grid-form">
+                    <label for="name">Name</label>
+                    <input id="name" placeholder="Enter the product name" type="text" >
+                    <label for="price">Price</label>
+                    <input id="price" placeholder="Enter the product price"  type="number"  min="0">
+                    <label for="sizes">Sizes</label>
+                    <input id="sizes" placeholder="Enter the product sizes" type="number" min="0">
+                    <label for="offer">Offer</label>
+                    <input id="offer" placeholder="Enter the product offer" type="number" min="0">
+                    <label for="images">Images</label>
+                    <input id="images" placeholder="Enter the product images" type="file" multiple  accept="image/*">
+            </div>
+            <button class="submit-product">Submit</button>
+        </form>
+    </div>
+
+</main>
+<h2 class="secondary-heading">Update & Delete products</h2>
+<section class="project">
+    <div class="grid">
+    </div>
+</section>
+<script src="js/admin.js"></script>
+<footer>
+    <h2>H B A</h2>
+</footer>
+</body>
+</html>

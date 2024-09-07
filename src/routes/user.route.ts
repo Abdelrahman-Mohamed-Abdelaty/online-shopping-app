@@ -6,7 +6,7 @@ import {deserializeHandler, googleStrategyOptions, serializeHandler, verifyUser}
 import {
     createUser, deleteMe,
     deleteUser,
-    getAllUsers, getMe,
+    getAllUsers, getMe, getMyOrders, getOneOrder,
     getUserById,
     login,
     logout,
@@ -17,21 +17,23 @@ import {
 const router=Router();
 
 // Configure passport
-// passport.serializeUser(serializeHandler);
-// passport.deserializeUser(deserializeHandler);
+passport.serializeUser(serializeHandler);
+passport.deserializeUser(deserializeHandler);
 
 passport.use(new GoogleStrategy(googleStrategyOptions,
     verifyUser
 ));
 
 
-// Routes
+// Auth Routes
 router.post('/login',login)
 router.post('/signup',signup)
 router.use(protect);
 router.post('/logout',logout)
 router.delete("/deleteMe",deleteMe)
 router.get("/me",getMe,getUserById);
+router.get("/my-orders",getMyOrders);
+
 
 router.get("/",restrictTo('admin'),getAllUsers)
 router.get("/:id",restrictTo('admin'),getUserById)

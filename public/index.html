@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBA Brand</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/admin-index-res.css">
+    <style>
+        #navbar {
+            font-size: 25px;
+            color: rgb(200, 34, 34);
+            cursor: pointer;
+            transition: color 0.3s ease-in-out;
+            margin-right: auto;
+        }
+
+
+        .slide {
+            height: 100vh;
+            width: 250px;
+            position: fixed;
+            left: -250px;
+            top: 0;
+            background-color: #0a0a0a;
+            overflow-y: auto;
+            transition: 0.5s ease;
+            z-index: 999;
+            padding-top: 60px;
+        }
+
+        .slide.open {
+            left: 0;
+        }
+
+        .slide .close-icon {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 25px;
+            color: #e11818;
+            cursor: pointer;
+        }
+
+        .slide ul {
+            padding: 0;
+            margin-top: 50px;
+        }
+
+        .slide ul li {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .slide ul li a {
+            color: #ebe2e2;
+            font-weight: bold;
+            font-size: 18px;
+            padding: 10px 15px;
+            display: block;
+            text-decoration: none;
+            transition: background-color 0.2s ease-out;
+        }
+
+        .slide ul li a:hover {
+            background-color: #7d0505;
+        }
+
+    </style>
+</head>
+
+<body class="space-background">
+<header>
+    <i class="fa-solid fa-bars" id="navbar" onclick="toggleNav()"></i>
+    <div class="slide" id="menu">
+        <i class="fa-solid fa-times close-icon" onclick="toggleNav()"></i>
+        <ul>
+<!--            <li><a href="#">Home</a></li>-->
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="checkout.html">Sale</a></li>
+            <li><a href="aboutUs.html">Team</a></li>
+            <li><a href="login.html">Login For Admins</a></li>
+        </ul>
+    </div>
+    <img src="https://storage.googleapis.com/bosta-files/sllr_store_images/NTA5MzA4X18yMDI0LTA0LTE5VDEyOjQ0OjIxLjU3NVpfMS5qcGc=.jpg" class="logo1">
+</header>
+
+<main>
+    <div class="mainimage">
+        <button type="button" class="mainbuttonshopnow">Shop now</button>
+    </div>
+</main>
+<section class="project" >
+    <h2 class="project-heading"><span>Project</span> X</h2>
+    <div class="grid">
+    </div>
+</section>
+<!--<div class="home-page-clothes">-->
+
+<!--</div>-->
+<script src="js/script.js"></script>
+<footer>
+    <h2>H B A</h2>
+</footer>
+</body>
+</html>

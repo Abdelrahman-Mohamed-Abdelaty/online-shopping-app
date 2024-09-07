@@ -15,6 +15,14 @@ Vendor.init({
         type: sequelize_1.DataTypes.BIGINT,
         primaryKey: true,
     },
+    serviceAvailable: {
+        type: sequelize_1.DataTypes.BOOLEAN,
+        defaultValue: true
+    },
+    images: {
+        type: sequelize_1.DataTypes.ARRAY(sequelize_1.DataTypes.STRING),
+        allowNull: true
+    }
 }, {
     sequelize: sequelize_2.sequelize,
     modelName: Vendor.modelName(),

@@ -1,10 +1,9 @@
 import {DataTypes, Model} from 'sequelize'
 import {AppError, catchAsync} from "../utility";
-
+import {promises as fs} from "fs";
 
 export const deleteFactory=(Model:Model)=>catchAsync (async (req,res,next)=>{
     const count= await Model.destroy({where:{id:req.params.id}});
-    console.log(count);
     if(!count){
         return next(new AppError("data is not found",404));
     }
@@ -44,6 +43,13 @@ export const updateFactory=(Model:Model)=>catchAsync(async (req,res,next)=>{
             row
         }
     })
+    if(req.body.images){
+        const promises= rowFound.dataValues.images.map((image)=>{
+            console.log(image);
+            return fs.unlink(`public/img/products/${image}`)
+        })
+        await Promise.all(promises);
+    }
 })
 
 export const getOneFactory=(Model:Model)=>catchAsync (async (req,res,next)=>{

@@ -1,0 +1,101 @@
+doctype html
+head
+    link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css' integrity='sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==' crossorigin='anonymous' referrerpolicy='no-referrer')
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    title HBA Brand
+    link(rel='stylesheet' href='css/index.css')
+    link(rel='stylesheet' href='css/admin-index-res.css')
+    style.
+        #navbar {
+            font-size: 25px;
+            color: rgb(200, 34, 34);
+            cursor: pointer;
+            transition: color 0.3s ease-in-out;
+            margin-right: auto;
+        }
+        .slide {
+            height: 100vh;
+            width: 250px;
+            position: fixed;
+            left: -250px;
+            top: 0;
+            background-color: #0a0a0a;
+            overflow-y: auto;
+            transition: 0.5s ease;
+            z-index: 999;
+            padding-top: 60px;
+        }
+        .slide.open {
+            left: 0;
+        }
+        .slide .close-icon {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 25px;
+            color: #e11818;
+            cursor: pointer;
+        }
+        .slide ul {
+            padding: 0;
+            margin-top: 50px;
+        }
+        .slide ul li {
+            list-style: none;
+            margin: 20px 0;
+        }
+        .slide ul li a {
+            color: #ebe2e2;
+            font-weight: bold;
+            font-size: 18px;
+            padding: 10px 15px;
+            display: block;
+            text-decoration: none;
+            transition: background-color 0.2s ease-out;
+        }
+        .slide ul li a:hover {
+            background-color: #7d0505;
+        }
+header
+    i#navbar.fa-solid.fa-bars(onclick='toggleNav()')
+    #menu.slide
+        i.fa-solid.fa-times.close-icon(onclick='toggleNav()')
+        ul
+            li
+                a(href='index.html') Home
+            li
+                a(href='shop.html') Shop
+            li
+                a(href='contact.html') Contact
+            li
+                a(href='checkout.html') Sale
+            li
+                a(href='aboutUs.html') Team
+            li
+                a(href='login.html') Login For Admins
+    img.logo1(src='https://storage.googleapis.com/bosta-files/sllr_store_images/NTA5MzA4X18yMDI0LTA0LTE5VDEyOjQ0OjIxLjU3NVpfMS5qcGc=.jpg')
+
+main
+    h1.admin-heading Admin Dashboard
+    div
+        h2.secondary-heading Add products
+        form.add-products-form.create-product
+            .product-grid-form
+                label(for='name') Name
+                input#name(placeholder='Enter the product name' type='text')
+                label(for='price') Price
+                input#price(placeholder='Enter the product price' type='number' min='0')
+                label(for='sizes') Sizes
+                input#sizes(placeholder='Enter the product sizes' type='number' min='0')
+                label(for='offer') Offer
+                input#offer(placeholder='Enter the product offer' type='number' min='0')
+                label(for='images') Images
+                input#images(placeholder='Enter the product images' type='file' multiple='' accept='image/*')
+            button.submit-product Submit
+h2.secondary-heading Update &amp; Delete products
+section.project
+    .grid
+script(src='/js/admin.js')
+footer
+    h2 H B A

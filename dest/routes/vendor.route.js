@@ -1,9 +1,11 @@
 "use strict";
-// import {Router,Request,Response,NextFunction} from 'express'
-// import {createUser, deleteUser, getAllUsers, getUserById, welcomeUser} from "../controllers";
-//
-// const router=Router();
-//
-//
-//
-// export {router as userRoute}
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.vendorRoute = void 0;
+const express_1 = require("express");
+const controllers_1 = require("../controllers");
+const router = (0, express_1.Router)();
+exports.vendorRoute = router;
+router.use(controllers_1.protect);
+// Get all vendors
+// router.get('/:id/products',getProductsOfVendor)
+router.get('/:id', controllers_1.getVendorById);

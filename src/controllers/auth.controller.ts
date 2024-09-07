@@ -1,8 +1,7 @@
 import {NextFunction,Response,Request} from "express";
-import {IUser} from "../dto";
 // @ts-ignore
 import jwt from 'jsonwebtoken';
-import {Customer, User} from "../models";
+import {User} from "../models";
 import {AppError, catchAsync, validatePassword} from "../utility";
 import {use} from "passport";
 import {promisify} from "node:util";
@@ -67,7 +66,6 @@ export const login=catchAsync(async (req,res,next)=>{
     if(!user||!await validatePassword(password,user.password!,user.salt!)){
         return next(new AppError("email or password is not correct",400))
     }
-    console.log(user)
     await sendToken(user,200,res);
 })
 export const clearCookies = (res:Response)=>{
@@ -97,7 +95,7 @@ export const protect=catchAsync(async (req,res,next)=>{
         refresh = req.cookies.refresh;
 
     if(!token&&!refresh){
-        return next(new AppError("you are not logged in,log in to get access",401))
+        return next(new AppError("you are not logged, log in to get access",401))
     }
     //verify the token
     let decoded;
@@ -124,19 +122,13 @@ export const protect=catchAsync(async (req,res,next)=>{
 })
 
 export const signup=catchAsync(async(req,res,next)=>{
+    console.log(req.body)
     req.body.role = 'customer';
-    const userData = await extractUserData(req)
-    console.log(userData)
     if(req.body.password !== req.body.passwordConfirm)
         return next(new AppError('password doesn\'t match passwordConfirm',400));
-    const newUser=await Customer.create({user:userData},
-        {
-            include: [
-                {
-                    association: Customer.User
-                }
-            ],
-        });
-    console.log(newUser.dataValues.user.dataValues)
-    await sendToken(newUser.dataValues.user.dataValues,201,res);
+    const userData = await extractUserData(req);
+    console.log(userData);
+    const newUser=await User.create(userData);
+    console.log(newUser.dataValues)
+    await sendToken(newUser.dataValues,201,res);
 })

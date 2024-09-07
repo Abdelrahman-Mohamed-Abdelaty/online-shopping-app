@@ -1,7 +1,6 @@
 import {DataTypes, Model} from 'sequelize'
 import {sequelize} from "../utility/sequelize";
-import {Customer} from "./customer.model";
-import {Vendor} from "./vendor.model";
+import {User} from "./user.model";
 
 class Product extends Model{
     static modelName(){
@@ -17,63 +16,57 @@ Product.init(
         },
         vendorId: {
             type: DataTypes.BIGINT,
-            allowNull: false
+            allowNull: false,
+            unique: 'vendor_name_unique_pair'
         },
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique:true
+            unique: 'vendor_name_unique_pair'
         },
         description: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        category: {
-            type: DataTypes.STRING,
-            allowNull: true
+        discountedPrice: {
+            type: DataTypes.FLOAT,  // Number equivalent in Sequelize
         },
-        foodType: {
-            type: DataTypes.STRING,
-            allowNull: false
+        images: {
+            type: DataTypes.ARRAY(DataTypes.STRING),  // Array of strings
+                allowNull: false,
+                validate: {
+                notNull: { msg: "Product must have images" },
+            },
         },
-        readyTime: {
-            type: DataTypes.INTEGER,
-            allowNull: true
+        sizes: {
+            type: DataTypes.FLOAT,  // Sizes represented as numbers
+        },
+        offer: {
+            type: DataTypes.FLOAT,  // Offer as a number (percentage or amount)
         },
         price: {
             type: DataTypes.FLOAT,
-            allowNull: true
+                allowNull: false,
+                validate: {
+                notNull: { msg: "Product should have a price" },
+            },
         },
-        rating: {
-            type: DataTypes.FLOAT,
-            allowNull: true
-        },
-        images: {
-            type: DataTypes.ARRAY(DataTypes.STRING),
-            allowNull: true
-        }
-    },
+},
     {
         sequelize,
         modelName:Product.modelName(),
-        timestamps: false,
+        timestamps: true,
+        createdAt: 'createdAt',
+        updatedAt: false,
     },
 );
 
-// Cart.hasMany(Product, {
-//     onDelete: 'NO',
-//     onUpdate: 'CASCADE',
-//     foreignKey:'customerId'
-// });
-// Product.belongsTo(Cart,{
-//     foreignKey:'customerId'
-// });
-Vendor.hasMany(Product,{
+User.hasMany(Product,{
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
     foreignKey:'vendorId'
 })
-Product.belongsTo(Vendor,{
+Product.belongsTo(User,{
     foreignKey:'vendorId'
 })
 export  {Product};

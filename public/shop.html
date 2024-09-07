@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet"  href="css/index.css">
+    <style>
+        body {
+            font-family: 'Helvetica', Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
+
+        .shop {
+            width: 350px;
+            padding: 20px;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            left: 0; /* Stick to the left side of the screen */
+            top: 0;  /* Stick to the top side of the screen */
+            background-color: #1a1a1a;
+            border-radius: 0; /* Remove border-radius if sticking to the edges */
+        }
+
+
+        .shopname h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #e60000;
+        }
+
+        .catogoerys, .filter-by, .discounts, .size, .sleeve, .logocolor, .color, .price {
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .catogoerys a {
+            display: block;
+            text-decoration: none;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .catogoerys a:hover {
+            text-decoration: none;
+            color: #e60000
+        }
+        .shopname h1 {
+            font-size: 28px; /* Increased from 24px to 28px */
+            margin-bottom: 20px;
+            color: #e60000;
+        }
+        .size, .sleeve, .logocolor, .color {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+            accent-color: #e60000;
+        }
+
+        label {
+            display: inline-block;
+        }
+
+        textarea {
+            background-color: #1a1a1a;
+            color: #fff;
+            border: 1px solid #e60000;
+            border-radius: 5px;
+            padding: 8px 10px;
+            font-family: 'Helvetica', Arial, sans-serif;
+            font-size: 14px;
+            resize: none;
+        }
+
+        textarea::placeholder {
+            color: #bbb;
+            font-style: italic;
+        }
+        .catogoerys h2,
+        .filter-by h2,
+        .discount h3,
+        .size h3,
+        .sleeve h3,
+        .logocolor h3,
+        .color h3,
+        .price h3 {
+            font-size: 22px; /* Increased font size for section headings */
+            margin-bottom: 10px;
+        }
+
+        .catogoerys a {
+            display: block;
+            text-decoration: none;
+            color: #fff;
+            margin-bottom: 10px;
+            font-size: 18px; /* Increased from the default size */
+        }
+
+        .filter-option label {
+            font-size: 18px; /* Increased font size for labels */
+        }
+
+        textarea {
+            background-color: #1a1a1a;
+            color: #fff;
+            border: 1px solid #e60000;
+            border-radius: 5px;
+            padding: 8px 10px;
+            font-family: 'Helvetica', Arial, sans-serif;
+            font-size: 16px; /* Increased from 14px to 16px */
+            resize: none;
+        }
+
+        textarea::placeholder {
+            color: #bbb;
+            font-style: italic;
+        }
+
+    </style>
+</head>
+<body>
+<nav class="shop">
+    <div class="shopname">
+        <h1>Shop</h1>
+    </div>
+    <div class="catogoerys" id="catogoerys">
+        <h2>Categories</h2>
+        <a href="#">Basics</a>
+        <a href="#">OVERSIZED</a>
+        <a href="#">Sweat pants</a>
+        <a href="#">White shirt</a>
+    </div>
+    <div class="filter-by" id="filter-by">
+        <h2>Filter by</h2>
+        <div class="filter-option">
+            <input type="checkbox" id="in-stock">
+            <label for="in-stock">In stock</label>
+        </div>
+    </div>
+    <div class="discounts" id="discounts">
+        <h3>Discounts</h3>
+        <div class="filter-option">
+            <input type="checkbox" id="on-sale">
+            <label for="on-sale">On sale</label>
+        </div>
+    </div>
+    <div class="size" id="size">
+        <h3>Size</h3>
+        <div class="filter-option">
+            <input type="checkbox" id="size-s">
+            <label for="size-s">S</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="size-m">
+            <label for="size-m">M</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="size-l">
+            <label for="size-l">L</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="size-xl">
+            <label for="size-xl">XL</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="size-xxl">
+            <label for="size-xxl">XXL</label>
+        </div>
+    </div>
+    <div class="sleeve" id="sleeve">
+        <h3>Sleeve</h3>
+        <div class="filter-option">
+            <input type="checkbox" id="short-sleeve">
+            <label for="short-sleeve">Short sleeve</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="long-sleeve">
+            <label for="long-sleeve">Long sleeve</label>
+        </div>
+    </div>
+    <div class="logocolor">
+        <h3>Logo color</h3>
+        <div class="filter-option">
+            <input type="checkbox" id="logo-black">
+            <label for="logo-black">Black</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="logo-red">
+            <label for="logo-red">Red</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="logo-white">
+            <label for="logo-white">White</label>
+        </div>
+    </div>
+    <div class="color">
+        <h3>Color</h3>
+        <div class="filter-option">
+            <input type="checkbox" id="color-black">
+            <label for="color-black">Black</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="color-white">
+            <label for="color-white">White</label>
+        </div>
+    </div>
+    <div class="price">
+        <h3>Price</h3>
+        <p>From</p>
+        <textarea placeholder="EGP 0" cols="10" rows="1"></textarea>
+        <p>To</p>
+        <textarea placeholder="EGP 1000" cols="10" rows="1"></textarea>
+    </div>
+</nav>
+<div class="home-page-clothes">
+    <section class="project" >
+        <h2 class="project-heading"><span>Products</span></h2>
+        <div class="grid">
+        </div>
+    </section>
+</div>
+<script src="js/script.js"></script>
+</body>
+</html>

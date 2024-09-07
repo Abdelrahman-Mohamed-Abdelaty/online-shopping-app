@@ -26,7 +26,6 @@ User.init({
             set(value:string){
                 this.setDataValue('name',value.toLowerCase())
             }
-
         },
         address: {
             type: DataTypes.STRING,
@@ -46,7 +45,7 @@ User.init({
         },
         email:{
             type:DataTypes.STRING,
-            unique:true,
+            unique:'email',
             allowNull:false,
             validate:{
                 isEmail:true
@@ -54,7 +53,7 @@ User.init({
         },
         salt:{
             type:DataTypes.STRING,
-            unique:true,
+            unique:'salt',
             allowNull: false
         },
         password:{
@@ -85,12 +84,18 @@ User.init({
                 return now;
             },
         },
+        isAvailable:{
+            type:DataTypes.BOOLEAN,
+            defaultValue:true,
+        },
+        photo:{
+            type:DataTypes.STRING
+        },
     },
 
     {
         sequelize,
         modelName:User.modelName(),
-        indexes: [{ unique: true, fields: ['email'] }],
     },
 );
 

@@ -1,7 +1,7 @@
 import {BelongsTo, DataTypes, Model} from 'sequelize'
 import {sequelize} from "../utility/sequelize";
-import {Customer} from "./customer.model";
 import {Product} from "./product.model";
+import {User} from "./user.model";
 
 
 class Cart extends Model{
@@ -38,12 +38,12 @@ Cart.init(
         timestamps: false,
     },
 );
-Customer.hasMany(Cart, {
+User.hasMany(Cart, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
     foreignKey:'customerId'
 });
-Cart.belongsTo(Customer,{
+Cart.belongsTo(User,{
     foreignKey:'customerId'
 });
 

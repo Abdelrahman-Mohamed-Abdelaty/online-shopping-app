@@ -1,6 +1,6 @@
 node_modules
 *.env
 .idea
-.src
 dest
 oauth.google.js
+todo.txt
