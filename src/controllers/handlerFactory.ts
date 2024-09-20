@@ -1,9 +1,15 @@
-import {DataTypes, Model} from 'sequelize'
 import {AppError, catchAsync} from "../utility";
-import {promises as fs} from "fs";
+import {QueryCreator} from "../utility/queryCreator";
+import {ModelStatic, Model, WhereOptions, Op, Attributes} from "sequelize";
+import {FindOptions} from "mongodb";
 
-export const deleteFactory=(Model:Model)=>catchAsync (async (req,res,next)=>{
-    const count= await Model.destroy({where:{id:req.params.id}});
+export const deleteFactory=<T extends Model>(Model: ModelStatic<T>,callNext?:boolean)=>catchAsync (async (req,res,next)=>{
+    const whereClause = {
+        id: {
+            [Op.eq]: req.params.id
+        }
+    } as WhereOptions<T['_attributes']>;
+    const count= await Model.destroy({where:whereClause});
     if(!count){
         return next(new AppError("data is not found",404));
     }
@@ -11,10 +17,10 @@ export const deleteFactory=(Model:Model)=>catchAsync (async (req,res,next)=>{
         status:"success",
         data:null,
     })
+    if(callNext) next();
 })
 
-
-export const createFactory=(Model:Model)=>catchAsync (async (req,res,next)=>{
+export const createFactory=<T extends Model>(Model: ModelStatic<T>)=>catchAsync (async (req,res,next)=>{
     const row=await Model.create(req.body);
     res.status(201).json({
         status:"success",
@@ -23,42 +29,40 @@ export const createFactory=(Model:Model)=>catchAsync (async (req,res,next)=>{
         }
     })
 })
-export const updateFactory=(Model:Model)=>catchAsync(async (req,res,next)=>{
+
+export const updateFactory=<T extends Model>(Model: ModelStatic<T>,callNext?:boolean)=>catchAsync(async (req,res,next)=>{
     if(!req.body)
         return next(new AppError('Please provide some data for updating',400))
     const rowFound = await Model.findByPk(req.params.id);
     if(!rowFound)
         return next(new AppError("row is not found",404));
+    const whereClause = {
+        id: {
+            [Op.eq]: req.params.id
+        }
+    } as WhereOptions<T['_attributes']>;
     const [rowCount,row] = await Model.update(req.body,{
-        where:{
-            id:req.params.id
-        },
+        where:whereClause,
         returning: true,
     });
     if(!rowCount)
         return next(new AppError("no field was updated",400));
+    if(callNext){
+        return next();
+    }
     res.status(200).json({
         status:"success",
         data:{
             row
         }
     })
-    if(req.body.images){
-        const promises= rowFound.dataValues.images.map((image)=>{
-            console.log(image);
-            return fs.unlink(`public/img/products/${image}`)
-        })
-        await Promise.all(promises);
-    }
 })
 
-export const getOneFactory=(Model:Model)=>catchAsync (async (req,res,next)=>{
+export const getOneFactory=<T extends Model>(Model: ModelStatic<T>)=>catchAsync (async (req,res,next)=>{
     const row=await Model.findByPk(req.params.id);
-    if(!row){
+    if(!row)
         return next(new AppError("row is not found",404));
-    }
-    row!.password = undefined;
-    row!.salt = undefined;
+
     res.status(200).json({
         status:"success",
         data:{
@@ -66,9 +70,17 @@ export const getOneFactory=(Model:Model)=>catchAsync (async (req,res,next)=>{
         }
     })
 })
-export const getAllFactory=(model:Model)=>catchAsync(async (req,res,next)=>{
-    const rows = await model.findAll();
-    console.log(rows);
+export const getAllFactory=<T extends Model>(Model:ModelStatic<T>,callNext?:Boolean)=>catchAsync(async (req,res,next)=>{
+    console.log("hi")
+    const query = new QueryCreator(req.query)
+                    .filter()
+                    .sort()
+                    .limitFields()
+                    .paginate()
+                    .query as  FindOptions<Attributes<T>>;
+    console.log(query)
+    const rows = await Model.findAll(query);
+    console.log(rows)
     res.status(200).json({
         status:"success",
         results:rows.length,
@@ -76,4 +88,6 @@ export const getAllFactory=(model:Model)=>catchAsync(async (req,res,next)=>{
             rows
         }
     })
+    if(callNext)
+        next();
 });

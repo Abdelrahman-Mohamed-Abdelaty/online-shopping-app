@@ -18,3 +18,5 @@ __exportStar(require("./user.model"), exports);
 __exportStar(require("./cart.model"), exports);
 __exportStar(require("./product.model"), exports);
 __exportStar(require("./offer.model"), exports);
+__exportStar(require("./complaint.model"), exports);
+__exportStar(require("./notification.model"), exports);

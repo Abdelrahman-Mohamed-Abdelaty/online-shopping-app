@@ -20,3 +20,5 @@ __exportStar(require("./product.route"), exports);
 __exportStar(require("./cart.route"), exports);
 __exportStar(require("./vendor.route"), exports);
 __exportStar(require("./order.route"), exports);
+__exportStar(require("./complaint.route"), exports);
+__exportStar(require("./notification.route"), exports);

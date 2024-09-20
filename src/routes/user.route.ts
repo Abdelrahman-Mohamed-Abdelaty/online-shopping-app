@@ -4,15 +4,15 @@ import GoogleStrategy  from 'passport-google-oidc' ;
 import {NextFunction, Router} from "express";
 import {deserializeHandler, googleStrategyOptions, serializeHandler, verifyUser} from "../utility";
 import {
-    createUser, deleteMe,
-    deleteUser,
-    getAllUsers, getMe, getMyOrders, getOneOrder,
+    createUser, deleteMe, deleteMyNotification,
+    deleteUser, getAllComplaints, getAllOrders,
+    getAllUsers, getMe, getMyNotification,
     getUserById,
     login,
     logout,
     protect,
-    restrictTo,
-    signup, updateUser
+    restrictTo, setCustomerId, setRecepiantId,
+    signup, updateNoticationsSeen, updateUser
 } from "../controllers";
 const router=Router();
 
@@ -32,7 +32,11 @@ router.use(protect);
 router.post('/logout',logout)
 router.delete("/deleteMe",deleteMe)
 router.get("/me",getMe,getUserById);
-router.get("/my-orders",getMyOrders);
+router.get("/my-orders",setCustomerId,getAllOrders);
+router.get("/my-notifications",setRecepiantId,getMyNotification,updateNoticationsSeen);
+router.delete("/my-notifications",deleteMyNotification);
+router.get("/my-complaints",restrictTo('customer'),setCustomerId,getAllComplaints);
+
 
 
 router.get("/",restrictTo('admin'),getAllUsers)

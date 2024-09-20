@@ -1,42 +1,11 @@
 import {NextFunction,Response,Request} from "express";
-// @ts-ignore
 import jwt from 'jsonwebtoken';
 import {User} from "../models";
 import {AppError, catchAsync, validatePassword} from "../utility";
-import {use} from "passport";
-import {promisify} from "node:util";
 import {extractUserData} from "./user.controller";
 
-export const ensureAuthenticated=(req:Request, res:Response, next:NextFunction)=> {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.status(401).redirect('/'); // Redirect to login page if not authenticated
-}
-export const logoutGoogle=(req:Request, res:Response, next:NextFunction)=>{
-    req.logout(function(err) {
-        if (err) { return next(err); }
-        res.redirect('/');
-    });
-}
-
-const secretKey = process.env.SECRET_KEY
-const refreshSecretKey = process.env.REFRESH_SECRET_KEY
-
-function generateAccessToken(user:User) {
-    return jwt.sign({ id: user.id }, secretKey, { expiresIn: '15m' });
-}
-
-function generateRefreshToken(user:User) {
-    return jwt.sign({ id: user.id,}, refreshSecretKey, { expiresIn: '7d' });
-}
-export const restrictTo=(...roles: (string | any[])[])=>{
-    return (req:Request,res:Response,next:NextFunction)=>{
-        if(!roles.includes(req.user!.role) )
-            return next(new AppError("you don't have permission to perform this action",403));
-        next();
-    }
-}
+const accessSecretKey = process.env.SECRET_KEY as string
+const refreshSecretKey = process.env.REFRESH_SECRET_KEY as string
 let cookiesOptions={
     httpOnly:true,
     secure: false
@@ -44,9 +13,38 @@ let cookiesOptions={
 if(process.env.NODE_ENV==='production'){
     cookiesOptions.secure=true;
 }
+function generateAccessToken(userId:number) {
+    return jwt.sign({ id: userId }, accessSecretKey , { expiresIn: '15m' });
+}
+
+function generateRefreshToken(userId:number) {
+    return jwt.sign({ id: userId,}, refreshSecretKey, { expiresIn: '7d' });
+}
+function decodeJwtToken(token:string, secretKey:string) {
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, secretKey, (err, decoded) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(decoded);
+        });
+    });
+}
+export const restrictTo=(...roles: string[])=>{
+    return (req:Request,res:Response,next:NextFunction)=>{
+        if(!roles.includes(req.user!.role) )
+            return next(new AppError("you don't have permission to perform this action",403));
+        next();
+    }
+}
+interface JwtUserData{
+    id:number;
+    iat:number;
+}
+
 const sendToken=async (user:User,statusCode:number,res:Response)=>{
-    const token = generateAccessToken(user);
-    const refreshToken = generateRefreshToken(user)
+    const token = generateAccessToken(user.id);
+    const refreshToken = generateRefreshToken(user.id)
     user.password=undefined;
     user.salt=undefined;
     res.cookie('jwt',token, {...cookiesOptions,expires:new Date(Date.now()+ 15 * 60 * 1000)})
@@ -85,39 +83,40 @@ export const logout=catchAsync(async (req:Request,res:Response,next:NextFunction
     })
 })
 
-export const protect=catchAsync(async (req,res,next)=>{
-    //get the token
-    let token;
-    let refresh;
+const getTokens = (req:Request)=>{
+    let token:string | undefined;
+    let refresh:string | undefined;
     if(req.cookies.jwt)
         token=req.cookies.jwt;
     if(req.cookies.refresh)
         refresh = req.cookies.refresh;
+    return [token,refresh]
+}
+const verifyTokens = async (accessToken:string | undefined,
+                            refreshToken:string|undefined,res:Response):Promise<JwtUserData|undefined>=>{
+    if(refreshToken){
+        const decodedUserData=await decodeJwtToken(refreshToken,refreshSecretKey) as JwtUserData;
+        accessToken = generateAccessToken(decodedUserData.id)
+        res.cookie('jwt',accessToken, {...cookiesOptions,expires:new Date(Date.now()+ 15 * 60 * 1000),})
+        return decodedUserData;
+    }
+    if(accessToken)
+        return await decodeJwtToken(accessToken,accessSecretKey) as JwtUserData;
+}
 
-    if(!token&&!refresh){
+export const protect=catchAsync(async (req,res,next)=>{
+    let [accessToken,refreshToken] = getTokens(req);
+    if(!accessToken&&!refreshToken)
         return next(new AppError("you are not logged, log in to get access",401))
-    }
-    //verify the token
-    let decoded;
-    try{
-        decoded=await promisify(jwt.verify)(token,secretKey);     //throw error if invalid signature else return payload
-    }catch (err){
-        const refreshToken = req.cookies.refresh;
-        decoded=await promisify(jwt.verify)(refreshToken,refreshSecretKey);
-        token = generateAccessToken(decoded);
-        res.cookie('jwt',token, {...cookiesOptions,expires:new Date(Date.now()+ 15 * 60 * 1000),})
-    }
-    //if user exists, it may be delete and still have a valid token
-    const user=await User.findByPk(decoded.id);
-    if(!user){
+    const decodedUserData = await verifyTokens(accessToken,refreshToken,res)  as JwtUserData
+    //if user exists, it may be deleted and still have a valid token
+    const user=await User.findByPk(decodedUserData.id);
+    if(!user)
         return next(new AppError("User no longer exists",401))
-    }
     //if user change password after creating the token
-    if(user.passwordChangedAt&&(user.passwordChangedAt>new Date(decoded.iat*1000))){
+    if(user.isPasswordChangedRecent(decodedUserData.iat))
         return next(new AppError("User recently change password,Please log in again",401))
-    }
     req.user=user.dataValues;
-    res.locals.user=user;
     next();
 })
 
@@ -127,8 +126,20 @@ export const signup=catchAsync(async(req,res,next)=>{
     if(req.body.password !== req.body.passwordConfirm)
         return next(new AppError('password doesn\'t match passwordConfirm',400));
     const userData = await extractUserData(req);
-    console.log(userData);
     const newUser=await User.create(userData);
-    console.log(newUser.dataValues)
     await sendToken(newUser.dataValues,201,res);
 })
+
+
+// export const ensureAuthenticated=(req:Request, res:Response, next:NextFunction)=> {
+//     if (req.isAuthenticated()) {
+//         return next();
+//     }
+//     res.status(401).redirect('/'); // Redirect to login page if not authenticated
+// }
+// export const logoutGoogle=(req:Request, res:Response, next:NextFunction)=>{
+//     req.logout(function(err) {
+//         if (err) { return next(err); }
+//         res.redirect('/');
+//     });
+// }

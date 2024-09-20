@@ -3,6 +3,7 @@ import {sequelize} from "../utility/sequelize";
 import {User} from "./user.model";
 
 class Product extends Model{
+    declare vendorId:number
     static modelName(){
         return 'products'
     }

@@ -61,9 +61,9 @@ export const getVendorById =  catchAsync (async (req:Request,res:Response,next:N
             id:req.params.id,
             role:'vendor'
         },
-        include:[Product]
+        include:[Product],
+        attributes:['name','address','phone','email','isAvailable','photo']
     })
-    console.log(vendor);
     res.status(200).json({
         status:"success",
         vendor

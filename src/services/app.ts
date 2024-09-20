@@ -1,7 +1,15 @@
 import express, {Application} from 'express'
 import bodyParser from "body-parser";
 import {Request,Response,NextFunction} from "express";
-import {productRoute, userRoute, cartRoute, vendorRoute, orderRoute} from '../routes';
+import {
+    productRoute,
+    userRoute,
+    cartRoute,
+    vendorRoute,
+    orderRoute,
+    complaintRoute,
+    notificationRoute
+} from '../routes';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import session from 'express-session';
@@ -39,18 +47,14 @@ export default async (app:Application)=>{
         app.use(morgan("dev"))
     }
     app.use(logger('dev'))
-    app.use(session({
-        secret:process.env.SESSION_SECRET as string,
-        resave: false,
-        saveUninitialized: false,
-        store: new SQLiteStore({ db: 'sessions.db', dir: './var/db' })
-    }));
 
     app.use('/api/v1/users',userRoute)
     app.use('/api/v1/products',productRoute)
     app.use('/api/v1/carts',cartRoute)
     app.use('/api/v1/orders',orderRoute)
     app.use('/api/v1/vendors',vendorRoute)
+    app.use('/api/v1/complaints',complaintRoute)
+    app.use('/api/v1/notifications',notificationRoute)
     app.all("*",(req,res,next)=>{
         const err=new AppError(`Can't find ${req.originalUrl} on this server`,404);
         next(err);

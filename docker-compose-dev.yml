@@ -1,0 +1,12 @@
+version: "3"
+services:
+    online-shopping-app:
+        build:
+            context: .
+            args:
+                - NODE_ENV=development
+        volumes:
+            -   ./dest:/app/dest:ro
+        environment:
+            - NODE_ENV=development
+        command: npm run start-dev

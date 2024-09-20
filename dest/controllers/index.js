@@ -20,3 +20,5 @@ __exportStar(require("./error.controller"), exports);
 __exportStar(require("./product.controller"), exports);
 __exportStar(require("./cart.controller"), exports);
 __exportStar(require("./order.controller"), exports);
+__exportStar(require("./complaints.controller"), exports);
+__exportStar(require("./notification.controller"), exports);

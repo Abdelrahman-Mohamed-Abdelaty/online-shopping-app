@@ -3,12 +3,12 @@ import {Product, User} from "../models";
 import {NextFunction,Request,Response} from "express";
 import {AppError, catchAsync} from "../utility";
 import sharp from "sharp";
-import multer from 'multer'
-
+import multer, { FileFilterCallback } from 'multer';
+import {promises as fs} from "fs";
+import {CustomRequest} from "../dto";
 const multerStorage=multer.memoryStorage();
-
-export const deleteProduct= deleteFactory(Product);
-export const updateProduct = updateFactory(Product);
+export const deleteProduct= deleteFactory(Product,true);
+export const updateProduct = updateFactory(Product,true);
 export const getAllProducts= getAllFactory(Product);
 export const getProductById=getOneFactory(Product);
 export const createProduct=createFactory(Product);
@@ -17,23 +17,27 @@ export const setVendorId = (req:Request,res:Response,next:NextFunction)=>{
     console.log(req.body)
     next()
 }
-export const canChangeProduct =catchAsync (async (req:Request,res:Response,next:NextFunction)=>{
+export const canChangeProduct =catchAsync (async (req:any,res:Response,next:NextFunction)=>{
     const productId = req.params.id;
     const product = await Product.findByPk(productId);
-    if(product&&(product.dataValues.vendorId === req.user!.id || req.user!.role ==='admin'))
+    if(product&&(product.dataValues.vendorId === req.user!.id || req.user!.role ==='admin')) {
+        req.body.images = product?.dataValues.images
+        req.rowFound = product;
+        console.log(product.dataValues.images)
         return next();
+    }
     next(new AppError('you can only modify or delete your products',400))
 })
 
 
 
-const multerFilter=(req,file,cb)=>{
+const multerFilter=(req:Request,file: Express.Multer.File,cb:FileFilterCallback)=>{
     if(file.mimetype.startsWith('image')){
         console.log("multer filter")
         console.log(file);
         cb(null,true);
     }else{
-        cb(new AppError('Not an image! Please upload only images',400),false);
+        cb(new AppError('Not an image! Please upload only images',400));
     }
 }
 const upload=multer({
@@ -45,23 +49,22 @@ export const uploadProductPhotos=upload.fields([
 ]);
 
 export const resizeProductPhotos=async (req:Request,res:Response,next:NextFunction)=>{
-    console.log("before error")
-    if(!req.files.images || req.files.images.length!==2) {
+    const multerReq = req as CustomRequest
+    if(!multerReq.files!.images || multerReq.files.images.length!==2) {
         delete req.body.images
         return next();
     }
-    //2) images
-    console.log("Hello error")
-    req.body.images=[]
+    //2) imagesRequest
+    multerReq.body.images=[]
     await Promise.all(
-        req.files.images.map(async (img,i)=>{
+        multerReq.files.images.map(async (img,i)=>{
             const filename=`product-${Date.now()}-${i+1}.jpeg`
             await sharp(img.buffer)
                 .resize(1200,1200)
                 .toFormat('jpeg')
                 .jpeg({quality:90})
                 .toFile(`public/img/products/${filename}`);
-            req.body.images.push(filename);
+            multerReq.body.images.push(filename);
         })
     )
     next();
@@ -73,3 +76,12 @@ export const validateImages = (req:Request,res:Response,next:NextFunction)=>{
     }
     next();
 }
+export const deleteOldPhotoes = catchAsync(async (req:Request,res:Response,next:NextFunction)=>{
+    console.log(req.body.images)
+    if(req.body.images){
+        const promises= (req as CustomRequest).rowFound.dataValues.images.map((image:string)=>{
+            return fs.unlink(`public/img/products/${image}`)
+        })
+        await Promise.all(promises);
+    }
+})

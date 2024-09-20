@@ -5,10 +5,23 @@ class User extends Model{
     declare passwordChangedAt:Date
     declare password: string | undefined;
     declare salt: string | undefined;
-    declare id: string | undefined;
+    declare id: number;
+    declare refreshToken: string | undefined;
+    declare isAvailable:boolean;
     static modelName(){
         return 'users'
     }
+    isPasswordChangedRecent(jwtIssuedAtDate:number){
+        return this.dataValues.passwordChangedAt&&
+            (this.dataValues.passwordChangedAt>new Date(jwtIssuedAtDate*1000))
+    }
+    static async findByPk(pk: number, options?: any): Promise<User | null> {
+        const result = await super.findByPk(pk, options) as User;
+        result.password = undefined;
+        result.salt = undefined;
+        return result;
+    }
+
 }
 
 User.init({
@@ -76,6 +89,7 @@ User.init({
                 max: 180,
             },
         },
+
         passwordChangedAt:{
             type:DataTypes.DATE,
             defaultValue: () => {
@@ -87,6 +101,10 @@ User.init({
         isAvailable:{
             type:DataTypes.BOOLEAN,
             defaultValue:true,
+        },
+        lastDelivery:{
+          type:DataTypes.DATE,
+          defaultValue:'2024-01-01'
         },
         photo:{
             type:DataTypes.STRING

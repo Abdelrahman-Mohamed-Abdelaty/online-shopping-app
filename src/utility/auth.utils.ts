@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import {User} from "../models";
-export const serializeHandler = (user: User, cb: (err: any, id: { id: string }) => void) => {
+export const serializeHandler = (user: User, cb: (err: any, id: { id: number }) => void) => {
     process.nextTick(() => {
         cb(null, {id:user.id!}); // Pass the user's ID as a string
     });

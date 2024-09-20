@@ -9,9 +9,8 @@ export interface IUser{
     coverImages:[string];
     rating:number;
     foods:any;
-    id:string;
+    id:number;
     email:string,
-    _id:string,
     password:string | undefined,
     name: string,
     lat:number,
