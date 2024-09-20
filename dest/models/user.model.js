@@ -62,9 +62,6 @@ User.init({
         defaultValue: "customer",
         values: ['customer', 'vendor', 'admin', 'delivery']
     },
-    pincode: {
-        type: sequelize_1.DataTypes.STRING
-    },
     email: {
         type: sequelize_1.DataTypes.STRING,
         unique: 'email',

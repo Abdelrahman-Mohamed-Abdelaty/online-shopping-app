@@ -53,9 +53,6 @@ User.init({
             defaultValue:"customer",
             values:['customer','vendor','admin','delivery']
         },
-        pincode:{
-            type:DataTypes.STRING
-        },
         email:{
             type:DataTypes.STRING,
             unique:'email',
@@ -89,7 +86,6 @@ User.init({
                 max: 180,
             },
         },
-
         passwordChangedAt:{
             type:DataTypes.DATE,
             defaultValue: () => {
