@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.complaintRoute = void 0;
+const express_1 = require("express");
+const controllers_1 = require("../controllers");
+const router = (0, express_1.Router)();
+exports.complaintRoute = router;
+router.use(controllers_1.protect);
+router.get('/', (0, controllers_1.restrictTo)('admin'), controllers_1.getAllComplaints);
+router.post('/', (0, controllers_1.restrictTo)('customer'), controllers_1.deleteStatusFromBody, controllers_1.setCustomerId, controllers_1.createComplaint);
+router.delete('/:id', (0, controllers_1.restrictTo)('customer'), controllers_1.canDeleteComplaint, controllers_1.deleteComplaint);
+router.patch('/:id', (0, controllers_1.restrictTo)('admin', 'customer'), controllers_1.canUpdateComplaint, controllers_1.updateComplaint);
