@@ -1,111 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HBA Brand</title>
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/admin-index-res.css">
+    <title>Online Shopping API</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
     <style>
-        #navbar {
-            font-size: 25px;
-            color: rgb(200, 34, 34);
-            cursor: pointer;
-            transition: color 0.3s ease-in-out;
-            margin-right: auto;
-        }
-
-
-        .slide {
-            height: 100vh;
-            width: 250px;
-            position: fixed;
-            left: -250px;
-            top: 0;
-            background-color: #0a0a0a;
-            overflow-y: auto;
-            transition: 0.5s ease;
-            z-index: 999;
-            padding-top: 60px;
-        }
-
-        .slide.open {
-            left: 0;
-        }
-
-        .slide .close-icon {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 25px;
-            color: #e11818;
-            cursor: pointer;
-        }
-
-        .slide ul {
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
             padding: 0;
-            margin-top: 50px;
         }
-
-        .slide ul li {
-            list-style: none;
-            margin: 20px 0;
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
         }
-
-        .slide ul li a {
-            color: #ebe2e2;
-            font-weight: bold;
-            font-size: 18px;
-            padding: 10px 15px;
-            display: block;
+        h1, h2 {
+            color: #2c3e50;
+        }
+        nav {
+            background-color: #2c3e50;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav ul li {
+            margin: 0 10px;
+        }
+        nav ul li a {
+            color: white;
             text-decoration: none;
-            transition: background-color 0.2s ease-out;
+            font-weight: bold;
         }
-
-        .slide ul li a:hover {
-            background-color: #7d0505;
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-
+        ul {
+            padding-left: 20px;
+        }
+        .highlight {
+            background-color: #e9ecef;
+            border-left: 4px solid #007bff;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
+<body>
+<nav>
+    <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#collections">Collections</a></li>
+        <li><a href="#technologies">Technologies</a></li>
+        <li><a href="#resources">Resources</a></li>
+    </ul>
+</nav>
 
-<body class="space-background">
-<header>
-    <i class="fa-solid fa-bars" id="navbar" onclick="toggleNav()"></i>
-    <div class="slide" id="menu">
-        <i class="fa-solid fa-times close-icon" onclick="toggleNav()"></i>
+<div class="container">
+    <h1>Online Shopping API</h1>
+
+    <div id="overview" class="section">
+        <h2>Overview</h2>
+        <p>Welcome to our Online Shopping API. This API provides a comprehensive set of endpoints for managing an e-commerce platform, including user authentication, product management, order processing, and more.</p>
+    </div>
+
+    <div id="collections" class="section">
+        <h2>API Collections</h2>
+
+        <h3>Admins</h3>
+        <p>Endpoints for admin users to manage user resources. Operations include retrieving all users, creating new users, and deleting existing users.</p>
+        <div class="highlight">
+            <strong>Login for Testing:</strong><br>
+            Email: admin@gmail.com<br>
+            Password: admin
+        </div>
+
+        <h3>User</h3>
+        <p>User Authentication & Account Management API for managing user data, orders, complaints, notifications, and account lifecycle.</p>
+
+        <h3>Products</h3>
+        <p>Manage products with operations like retrieving all products, deleting products, getting a product by ID, creating new products, and updating existing products.</p>
+
+        <h3>Complaints</h3>
+        <p>Allow users to submit complaints for admin review. Includes routes for retrieving, creating, updating, and deleting complaints.</p>
+
+        <h3>Cart</h3>
+        <p>Manage customer shopping carts, including adding products, retrieving the cart, and removing products. Authentication required.</p>
+
+        <h3>Order</h3>
+        <p>Manage the entire order lifecycle for customers, admins, and delivery personnel. Supports creating, updating, canceling orders, and confirming deliveries.</p>
+
+        <h3>Vendors</h3>
+        <p>Retrieve vendor-specific data and access delivered order items for admins and related vendors.</p>
+    </div>
+
+    <div id="technologies" class="section">
+        <h2>Technologies Used</h2>
         <ul>
-<!--            <li><a href="#">Home</a></li>-->
-            <li><a href="shop.html">Shop</a></li>
-            <li><a href="contact.html">Contact</a></li>
-            <li><a href="checkout.html">Sale</a></li>
-            <li><a href="aboutUs.html">Team</a></li>
-            <li><a href="login.html">Login For Admins</a></li>
+            <li>Node.js</li>
+            <li>TypeScript</li>
+            <li>Docker</li>
+            <li>Docker Compose</li>
+            <li>PostgreSQL</li>
+            <li>Nginx</li>
+            <li>Sequelize ORM</li>
+            <li>Express.js</li>
+            <li>Amazon EC2 for deployment</li>
         </ul>
     </div>
-    <img src="https://storage.googleapis.com/bosta-files/sllr_store_images/NTA5MzA4X18yMDI0LTA0LTE5VDEyOjQ0OjIxLjU3NVpfMS5qcGc=.jpg" class="logo1">
-</header>
 
-<main>
-    <div class="mainimage">
-        <button type="button" class="mainbuttonshopnow">Shop now</button>
+    <div id="resources" class="section">
+        <h2>Resources</h2>
+        <p><strong>API Documentation:</strong> <a href="https://documenter.getpostman.com/view/32602280/2sAXqtagQi" target="_blank" class="btn">View on Postman</a></p>
+        <p><strong>GitHub Repository:</strong> <a href="https://github.com/Abdelrahman-Mohamed-Abdelaty/online-shopping-app" target="_blank" class="btn">View on GitHub</a></p>
+        <p><strong>Docker Image:</strong> <a href="https://registry.hub.docker.com/r/abdelrahman370/online-shopping" target="_blank" class="btn">View on Docker Hub</a></p>
     </div>
-</main>
-<section class="project" >
-    <h2 class="project-heading"><span>Project</span> X</h2>
-    <div class="grid">
-    </div>
-</section>
-<!--<div class="home-page-clothes">-->
-
-<!--</div>-->
-<script src="js/script.js"></script>
-<footer>
-    <h2>H B A</h2>
-</footer>
+</div>
 </body>
 </html>
