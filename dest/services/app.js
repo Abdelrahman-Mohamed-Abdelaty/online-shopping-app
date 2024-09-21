@@ -30,7 +30,7 @@ const morgan_2 = __importDefault(require("morgan"));
 exports.default = (app) => __awaiter(void 0, void 0, void 0, function* () {
     app.set('view engine', 'pug');
     app.set('views', path_1.default.join(__dirname, 'views'));
-    app.use(express_1.default.static(path_1.default.join(__dirname, 'public')));
+    app.use(express_1.default.static(path_1.default.join(__dirname, '../../public')));
     //Implement CORS
     app.use((0, cors_1.default)());
     app.options('*', (0, cors_1.default)());

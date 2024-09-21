@@ -18,7 +18,7 @@ exports.updateComplaint = (0, handlerFactory_1.updateFactory)(models_1.Complaint
 exports.getAllComplaints = (0, handlerFactory_1.getAllFactory)(models_1.Complaint);
 exports.createComplaint = (0, handlerFactory_1.createFactory)(models_1.Complaint);
 const setCustomerId = (req, res, next) => {
-    req.query.customerId = req.user.id;
+    req.query.customerId = req.user.id.toString();
     req.body.customerId = req.user.id;
     next();
 };
@@ -34,7 +34,7 @@ exports.canUpdateComplaint = (0, utility_1.catchAsync)((req, res, next) => __awa
         return next();
     }
     const complaint = yield models_1.Complaint.findByPk(req.params.id).then(complaint => complaint === null || complaint === void 0 ? void 0 : complaint.toJSON());
-    if (!complaint || complaint.customerId !== req.user.id)
+    if (!complaint || complaint.customerId != req.user.id)
         return next(new utility_1.AppError('you dont\'t have such a complaint', 404));
     req.body = {
         message: req.body.message,
@@ -44,7 +44,7 @@ exports.canUpdateComplaint = (0, utility_1.catchAsync)((req, res, next) => __awa
 }));
 exports.canDeleteComplaint = (0, utility_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const complaint = yield models_1.Complaint.findByPk(req.params.id).then(complaint => complaint === null || complaint === void 0 ? void 0 : complaint.toJSON());
-    if (!complaint || complaint.customerId !== req.user.id)
+    if (!complaint || complaint.customerId != req.user.id)
         return next(new utility_1.AppError('you dont\'t have such a complaint', 404));
     next();
 }));

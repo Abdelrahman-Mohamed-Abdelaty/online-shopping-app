@@ -35,7 +35,7 @@ exports.deleteMyNotification = (0, utility_1.catchAsync)((req, res, next) => __a
     });
 }));
 const setRecepiantId = (req, res, next) => {
-    req.query.to = req.user.id;
+    req.query.to = req.user.id.toString();
     next();
 };
 exports.setRecepiantId = setRecepiantId;

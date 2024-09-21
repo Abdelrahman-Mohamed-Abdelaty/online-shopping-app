@@ -9,7 +9,7 @@ export const getAllComplaints= getAllFactory(Complaint);
 export const createComplaint=createFactory(Complaint);
 
 export const setCustomerId = (req:Request,res:Response,next:NextFunction)=>{
-    req.query.customerId = req.user!.id;
+    req.query.customerId = req.user!.id.toString();
     req.body.customerId = req.user!.id;
     next();
 }
@@ -23,7 +23,7 @@ export const canUpdateComplaint = catchAsync(async (req,res,next)=>{
         return next();
     }
     const complaint = await Complaint.findByPk(req.params.id).then(complaint=>complaint?.toJSON());
-    if(!complaint || complaint.customerId !==req.user!.id)
+    if(!complaint || complaint.customerId != req.user!.id)
         return next(new AppError('you dont\'t have such a complaint',404))
     req.body = {
         message:req.body.message,
@@ -33,7 +33,7 @@ export const canUpdateComplaint = catchAsync(async (req,res,next)=>{
 })
 export const canDeleteComplaint = catchAsync(async (req,res,next)=>{
     const complaint = await Complaint.findByPk(req.params.id).then(complaint=>complaint?.toJSON());
-    if(!complaint || complaint.customerId !==req.user!.id)
+    if(!complaint || complaint.customerId != req.user!.id)
         return next(new AppError('you dont\'t have such a complaint',404))
     next();
 })

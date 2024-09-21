@@ -43,8 +43,8 @@ const calcTotalPrice = (items:OrderItem[])=>{
     return totalPrice;
 }
 export const createOrder = catchAsync(async (req,res,next)=>{
-    req.body.customerId = req.user.id;
-    const result = await getUserCartItems(req.user.id)
+    req.body.customerId = req.user!.id;
+    const result = await getUserCartItems(req.user!.id)
     if(result.length<1)
         return next(new AppError('your cart is empty,please add some product to the cart',400))
     const totalPrice = calcTotalPrice(result)
@@ -304,7 +304,7 @@ export const isTheCorrectOrderDelivery = catchAsync(async (req,res,next)=>{
    const order = await Order.findOne({
        where:{
             id:parseInt(req.params.id),
-            deliveryId:req.user.id
+            deliveryId:req.user!.id
        }});
    if(order) return next();
    next(new AppError('order not exists',404))
@@ -316,7 +316,7 @@ export const updateOrderLocation = catchAsync(async (req,res,next)=>{
     if(!lat || !lon)
         return next(new AppError('Please provide both lat,lon in the request body',400));
     const order = await Order.findByPk(id).then(order=>order?.toJSON());
-    console.log(order,req.user.id,id)
+    console.log(order,req.user!.id,id)
     if(!order||order.customerId != req.user!.id)
         return next(new AppError('order not found',404));
     if(order.status !== 'Pending')

@@ -32,7 +32,7 @@ export const createUser= catchAsync(async (req:Request,res:Response,next:NextFun
 })
 // export const createUser = createFactory(User);
 export const getMe = async (req:Request,res:Response,next:NextFunction)=>{
-    req.params.id = req.user!.id;
+    req.params.id = req.user!.id.toString();
     next();
 }
 export const deleteMe=catchAsync(async (req,res,next)=>{

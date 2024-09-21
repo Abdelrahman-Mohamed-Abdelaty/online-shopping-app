@@ -37,7 +37,7 @@ exports.createUser = (0, utility_1.catchAsync)((req, res, next) => __awaiter(voi
 }));
 // export const createUser = createFactory(User);
 const getMe = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    req.params.id = req.user.id;
+    req.params.id = req.user.id.toString();
     next();
 });
 exports.getMe = getMe;

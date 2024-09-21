@@ -26,7 +26,7 @@ export const deleteMyNotification = catchAsync(async (req,res,next)=>{
 })
 
 export const setRecepiantId = (req:Request,res:Response,next:NextFunction)=>{
-    req.query.to = req.user!.id;
+    req.query.to = req.user!.id.toString();
     next();
 }
 

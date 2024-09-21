@@ -16,15 +16,6 @@ import {
 } from "../controllers";
 const router=Router();
 
-// Configure passport
-passport.serializeUser(serializeHandler);
-passport.deserializeUser(deserializeHandler);
-
-passport.use(new GoogleStrategy(googleStrategyOptions,
-    verifyUser
-));
-
-
 // Auth Routes
 router.post('/login',login)
 router.post('/signup',signup)

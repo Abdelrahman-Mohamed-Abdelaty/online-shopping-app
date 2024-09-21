@@ -35,19 +35,19 @@ export const addProductToCart = catchAsync(async (req:Request,res,next)=>{
         customerId:req.user!.id,
         units:req.query.units || 1,
     })
-    await getAllCartItems(201,req.user.id*1,res)
+    await getAllCartItems(201,req.user!.id*1,res)
 })
 
 export const getCartOfCustomer = catchAsync(async (req,res,next)=>{
-    await getAllCartItems(200,req.user.id*1,res)
+    await getAllCartItems(200,req.user!.id*1,res)
 })
 
 export const deleteProductFromCart = catchAsync(async (req,res,next)=>{
-    const productFilterObject = {customerId:req.user.id} as ProductFilterObject
+    const productFilterObject = {customerId:req.user!.id} as ProductFilterObject
     if(req.params.id)
         productFilterObject.productId= parseInt(req.params.id);
     await Cart.destroy({
         where: {...productFilterObject}
     })
-    await getAllCartItems(200,req.user.id*1,res)
+    await getAllCartItems(200,req.user!.id*1,res)
 })
