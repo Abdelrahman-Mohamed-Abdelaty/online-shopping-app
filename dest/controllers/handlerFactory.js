@@ -58,15 +58,15 @@ const updateFactory = (Model, callNext) => (0, utility_1.catchAsync)((req, res, 
     });
     if (!rowCount)
         return next(new utility_1.AppError("no field was updated", 400));
-    if (callNext) {
-        return next();
-    }
     res.status(200).json({
         status: "success",
         data: {
             row
         }
     });
+    if (callNext) {
+        next();
+    }
 }));
 exports.updateFactory = updateFactory;
 const getOneFactory = (Model) => (0, utility_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {

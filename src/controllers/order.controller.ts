@@ -84,7 +84,7 @@ export const getOrderDetails = catchAsync(async (req,res,next)=>{
             }
         } as Includeable
     }).then(order=>order?.toJSON())
-    if(order&&req.user!.id !== order!.customerId&&req.user!.role !== 'admin')
+    if(order&&req.user!.id != order!.customerId&&req.user!.role !== 'admin')
         order = null;
     if(order){
         order.products.forEach((product:any)=>{
@@ -92,7 +92,8 @@ export const getOrderDetails = catchAsync(async (req,res,next)=>{
             product.price=product.orderItems.price;
             delete product.orderItems
         })
-    }
+    }else
+        return next(new AppError('order not found',404));
     res.status(200).json({
         status:"success",
         order
@@ -102,7 +103,7 @@ export const getOrderDetails = catchAsync(async (req,res,next)=>{
 export const deleteProductFromOrder = catchAsync(async (req,res,next)=>{
     const {productId,orderId} = req.params;
     const order = await Order.findByPk(orderId).then(order=>order?.toJSON());
-    if(!order||order.customerId !== req.user!.id)
+    if(!order||order.customerId != req.user!.id)
         return next(new AppError('order not found',404));
     if(order.status === 'Delivered' ||
         order.status === 'Out for Delivery' ||
@@ -148,7 +149,7 @@ export const updateProductFromOrder = catchAsync(async (req,res,next)=>{
         return next(new AppError('units can\'t be ZERO or NEGATIVE,' +
             ' you can delete the product from the order instead',404));
     const order = await Order.findByPk(orderId).then(order=>order?.toJSON());
-    if(!order||order.customerId !== req.user!.id)
+    if(!order||order.customerId != req.user!.id)
         return next(new AppError('order not found',404));
     if(order.status === 'Delivered' ||
         order.status === 'Out for Delivery' ||
@@ -175,7 +176,7 @@ export const addProductFromOrder = catchAsync(async (req,res,next)=>{
             ' you can delete the product from the order instead',404));
 
     const order = await Order.findByPk(orderId).then(order=>order?.toJSON());
-    if(!order||order.customerId !== req.user!.id)
+    if(!order||order.customerId != req.user!.id)
         return next(new AppError('order not found',404));
     if(order.status !== 'Pending')
         return next(new AppError('you can\'t modify this order now order',400));
@@ -316,7 +317,7 @@ export const updateOrderLocation = catchAsync(async (req,res,next)=>{
         return next(new AppError('Please provide both lat,lon in the request body',400));
     const order = await Order.findByPk(id).then(order=>order?.toJSON());
     console.log(order,req.user.id,id)
-    if(!order||order.customerId !== req.user!.id)
+    if(!order||order.customerId != req.user!.id)
         return next(new AppError('order not found',404));
     if(order.status !== 'Pending')
         return next(new AppError('you can\'t modify this order now order',400));

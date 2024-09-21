@@ -90,7 +90,7 @@ exports.getOrderDetails = (0, utility_1.catchAsync)((req, res, next) => __awaite
             }
         }
     }).then(order => order === null || order === void 0 ? void 0 : order.toJSON());
-    if (order && req.user.id !== order.customerId && req.user.role !== 'admin')
+    if (order && req.user.id != order.customerId && req.user.role !== 'admin')
         order = null;
     if (order) {
         order.products.forEach((product) => {
@@ -99,6 +99,8 @@ exports.getOrderDetails = (0, utility_1.catchAsync)((req, res, next) => __awaite
             delete product.orderItems;
         });
     }
+    else
+        return next(new utility_1.AppError('order not found', 404));
     res.status(200).json({
         status: "success",
         order
@@ -107,7 +109,7 @@ exports.getOrderDetails = (0, utility_1.catchAsync)((req, res, next) => __awaite
 exports.deleteProductFromOrder = (0, utility_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { productId, orderId } = req.params;
     const order = yield order_model_1.Order.findByPk(orderId).then(order => order === null || order === void 0 ? void 0 : order.toJSON());
-    if (!order || order.customerId !== req.user.id)
+    if (!order || order.customerId != req.user.id)
         return next(new utility_1.AppError('order not found', 404));
     if (order.status === 'Delivered' ||
         order.status === 'Out for Delivery' ||
@@ -153,7 +155,7 @@ exports.updateProductFromOrder = (0, utility_1.catchAsync)((req, res, next) => _
         return next(new utility_1.AppError('units can\'t be ZERO or NEGATIVE,' +
             ' you can delete the product from the order instead', 404));
     const order = yield order_model_1.Order.findByPk(orderId).then(order => order === null || order === void 0 ? void 0 : order.toJSON());
-    if (!order || order.customerId !== req.user.id)
+    if (!order || order.customerId != req.user.id)
         return next(new utility_1.AppError('order not found', 404));
     if (order.status === 'Delivered' ||
         order.status === 'Out for Delivery' ||
@@ -179,7 +181,7 @@ exports.addProductFromOrder = (0, utility_1.catchAsync)((req, res, next) => __aw
         return next(new utility_1.AppError('units can\'t be ZERO or NEGATIVE,' +
             ' you can delete the product from the order instead', 404));
     const order = yield order_model_1.Order.findByPk(orderId).then(order => order === null || order === void 0 ? void 0 : order.toJSON());
-    if (!order || order.customerId !== req.user.id)
+    if (!order || order.customerId != req.user.id)
         return next(new utility_1.AppError('order not found', 404));
     if (order.status !== 'Pending')
         return next(new utility_1.AppError('you can\'t modify this order now order', 400));
@@ -308,7 +310,7 @@ exports.updateOrderLocation = (0, utility_1.catchAsync)((req, res, next) => __aw
         return next(new utility_1.AppError('Please provide both lat,lon in the request body', 400));
     const order = yield order_model_1.Order.findByPk(id).then(order => order === null || order === void 0 ? void 0 : order.toJSON());
     console.log(order, req.user.id, id);
-    if (!order || order.customerId !== req.user.id)
+    if (!order || order.customerId != req.user.id)
         return next(new utility_1.AppError('order not found', 404));
     if (order.status !== 'Pending')
         return next(new utility_1.AppError('you can\'t modify this order now order', 400));

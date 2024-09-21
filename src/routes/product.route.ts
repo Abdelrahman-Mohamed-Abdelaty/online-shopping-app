@@ -23,7 +23,8 @@ router.post('/',uploadProductPhotos,resizeProductPhotos
 
 router.patch('/:id',canChangeProduct,
     uploadProductPhotos,resizeProductPhotos,
-    updateProduct,deleteOldPhotoes)
+    updateProduct,deleteOldPhotoes);
+
 router.delete('/:id',canChangeProduct,deleteProduct,deleteOldPhotoes)
 
 export {router as productRoute}

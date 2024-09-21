@@ -23,9 +23,6 @@ let cookiesOptions = {
     httpOnly: true,
     secure: false
 };
-if (process.env.NODE_ENV === 'production') {
-    cookiesOptions.secure = true;
-}
 function generateAccessToken(userId) {
     return jsonwebtoken_1.default.sign({ id: userId }, accessSecretKey, { expiresIn: '15m' });
 }

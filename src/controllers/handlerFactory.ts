@@ -47,15 +47,15 @@ export const updateFactory=<T extends Model>(Model: ModelStatic<T>,callNext?:boo
     });
     if(!rowCount)
         return next(new AppError("no field was updated",400));
-    if(callNext){
-        return next();
-    }
     res.status(200).json({
         status:"success",
         data:{
             row
         }
     })
+    if(callNext){
+        next();
+    }
 })
 
 export const getOneFactory=<T extends Model>(Model: ModelStatic<T>)=>catchAsync (async (req,res,next)=>{
