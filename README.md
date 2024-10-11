@@ -4,13 +4,6 @@
 
 The Online Shopping API is a comprehensive e-commerce backend solution built with modern technologies. It provides a robust set of endpoints for managing various aspects of an online shopping platform, including user authentication, product management, order processing, and vendor operations.
 
-## Live Demo
-
-You can view and interact with the live version of the API at:
-
-[http://98.83.215.67/](http://98.83.215.67/)
-
-Feel free to explore the endpoints and test the functionality of the API. Please note that this is a demo environment, so use it responsibly.
 
 ## Features
 
